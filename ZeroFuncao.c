@@ -23,6 +23,8 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
     }else
 }
 
+fuck this
+
 
 void calcPolinomio_rapido(Polinomio p, real_t x, real_t *px, real_t *dpx)
 {
