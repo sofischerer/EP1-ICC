@@ -21,7 +21,8 @@ bool criterio_3 (real_t xOld, real_t xNew){
     double_t doubleNew;
     doubleNew.f = xNew;
 
-    if (abs(doubleNew - doubleOld))
+    if (abs(doubleNew - doubleOld) < 3) return true;
+    return false; 
 }
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
@@ -32,16 +33,37 @@ real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_
 
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
-real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, real_t *raiz)
+real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, real_t *raiz, bool rapido)
 {
     real_t xNovo = (a+b)/2;
     real_t xVelho;
+    real_t fLeft, fRight, fMid;
+    real_t *erro;
+    real_t derivada;
 
-    if (){
+    if (rapido){
+        do{
+            calcPolinomio_rapido(p, a, fLeft, derivada);
+            calcPolinomio_rapido(p, b, fRight, derivada);
+            calcPolinomio_rapido(p, xNovo, fMid, derivada);
+            
+            if(fLeft * fMid < 0){
 
-    }else if(){
+            }else if (fLeft * fMid){
 
-    }else
+            }
+
+            if (criterioParada == 1){
+
+            }else if(criterioParada == 2){
+
+            }else{
+
+            }
+        }while ();
+    }
+
+    
 }
 
 void calcPolinomio_rapido(Polinomio p, real_t x, real_t *px, real_t *dpx)
