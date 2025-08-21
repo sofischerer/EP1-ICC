@@ -16,7 +16,12 @@ bool criterio_2 (real_t xCalc){
 }
 
 bool criterio_3 (real_t xOld, real_t xNew){
-    
+    double_t doubleOld;
+    doubleOld.f = xOld;
+    double_t doubleNew;
+    doubleNew.f = xNew;
+
+    if (abs(doubleNew - doubleOld))
 }
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro

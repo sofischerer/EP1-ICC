@@ -19,6 +19,7 @@ int main ()
   scanf("%lf %lf", &a, &b); // intervalo onde está uma das raizes.
 
 
+  fesetround(FE_DOWNWARD);
   // Restante do programa a partir daqui
 
   return 0;
