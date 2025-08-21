@@ -4,6 +4,21 @@
 #include "utils.h"
 #include "ZeroFuncao.h"
 
+bool criterio_1 (real_t xOld, real_t xNew){
+    real_t erro = abs(xNew - xOld);    
+    if (erro <= xNew*0.0000001) return true;
+    return false;
+}
+
+bool criterio_2 (real_t xCalc){
+    if (abs(xCalc) <= DBL_EPSILON) return true;
+    return false;
+}
+
+bool criterio_3 (real_t xOld, real_t xNew){
+    
+}
+
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
 real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_t *raiz)
 {
@@ -15,6 +30,7 @@ real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_
 real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, real_t *raiz)
 {
     real_t xNovo = (a+b)/2;
+    real_t xVelho;
 
     if (){
 
@@ -22,9 +38,6 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
 
     }else
 }
-
-fuck this
-
 
 void calcPolinomio_rapido(Polinomio p, real_t x, real_t *px, real_t *dpx)
 {
