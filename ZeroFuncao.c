@@ -55,7 +55,8 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
             }else{
                 return 0;
             }
-
+            
+            xNovo = (a+b)/2;
             if (criterioParada == 1){
                 erro = criterio1(xVelho, xNovo);
                 if (erro <= 0.0000001) return erro;
@@ -82,6 +83,7 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
                 return 0;
             }
 
+            xNovo = (a+b)/2;
             if (criterioParada == 1){
                 erro = criterio1(xVelho, xNovo);
                 if (erro <= 0.0000001) return erro;
