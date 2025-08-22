@@ -6,13 +6,14 @@
 #include "DoubleType.h"
 
 real_t criterio1 (real_t xOld, real_t xNew){
-    real_t erro = abs(xNew - xOld);    
+    real_t erro = fabs(xNew - xOld);
     erro *= xOld;
     return erro;
 }
 
-real_t criterio2 (){
-    
+real_t criterio2 (real_t x){
+    real_t erro = fabs(x);
+    return erro;
 }
 
 real_t criterio3 (real_t xOld, real_t xNew){
@@ -21,31 +22,30 @@ real_t criterio3 (real_t xOld, real_t xNew){
     Double_t doubleNew;
     doubleNew.f = xNew;
 
-    real_t erro = abs(doubleNew.i - doubleOld.i)-1;
+    real_t erro = fabs(doubleNew.i - doubleOld.i) - 1.0;
     return erro;
 }
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
 real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_t *raiz)
 {
-
+ return 0;
 }
 
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
 real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, real_t *raiz, int rapido)
 {
-    real_t xNovo = (a+b)/2;;
+    real_t xNovo = (a+b)/2;
     real_t xVelho;
     real_t fLeft, fMid;
     real_t derivada;
     real_t erro;
 
-    if (rapido){
-        while(1){
+    if (rapido == 1){
+        while(*it<600){
             calcPolinomio_rapido(p, a, &fLeft, &derivada);
             calcPolinomio_rapido(p, xNovo, &fMid, &derivada);
-            
             if(fLeft * fMid < 0){
                 b = xNovo;
                 xVelho = xNovo;
@@ -55,24 +55,33 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
             }else{
                 return 0;
             }
+            (*it)++;
             
             xNovo = (a+b)/2;
             if (criterioParada == 1){
                 erro = criterio1(xVelho, xNovo);
-                if (erro <= 0.0000001) return erro;
+                if (erro <= 0.0000001) {
+                    (*raiz) = xNovo;
+                    return erro;
+                }
             }else if(criterioParada == 2){
-                erro = criterio2();
-                if (erro <= DBL_EPSILON) return erro;
+                erro = criterio2(xNovo);
+                if (erro <= DBL_EPSILON) {
+                    (*raiz) = xNovo;
+                    return erro;
+                }
             }else{
                 erro = criterio3(xVelho, xNovo);
-                if (erro < 3) return erro;
+                if (erro < 3) {
+                    (*raiz) = xNovo;
+                    return erro;
+                }
             }
         }
     }else{
-        while(1){
+        while(*it<600){
             calcPolinomio_lento(p, a, &fLeft, &derivada);
             calcPolinomio_lento(p, xNovo, &fMid, &derivada);
-            
             if(fLeft * fMid < 0){
                 b = xNovo;
                 xVelho = xNovo;
@@ -82,17 +91,27 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
             }else{
                 return 0;
             }
-
+            (*it)++;
+            
             xNovo = (a+b)/2;
             if (criterioParada == 1){
                 erro = criterio1(xVelho, xNovo);
-                if (erro <= 0.0000001) return erro;
+                if (erro <= 0.0000001) {
+                    (*raiz) = xNovo;
+                    return erro;
+                }
             }else if(criterioParada == 2){
-                erro = criterio2();
-                if (erro <= DBL_EPSILON) return erro;
+                erro = criterio2(xNovo);
+                if (erro <= DBL_EPSILON) {
+                    (*raiz) = xNovo;
+                    return erro;
+                }
             }else{
                 erro = criterio3(xVelho, xNovo);
-                if (erro < 3) return erro;
+                if (erro < 3) {
+                    (*raiz) = xNovo;
+                    return erro;
+                }
             }
         }
     }
