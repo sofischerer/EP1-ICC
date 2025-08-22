@@ -3,26 +3,26 @@
 
 #include "utils.h"
 #include "ZeroFuncao.h"
+#include "DoubleType.h"
 
-bool criterio_1 (real_t xOld, real_t xNew){
+real_t criterio1 (real_t xOld, real_t xNew){
     real_t erro = abs(xNew - xOld);    
-    if (erro <= xNew*0.0000001) return true;
-    return false;
+    erro *= xOld;
+    return erro;
 }
 
-bool criterio_2 (real_t xCalc){
-    if (abs(xCalc) <= DBL_EPSILON) return true;
-    return false;
+real_t criterio2 (){
+    
 }
 
-bool criterio_3 (real_t xOld, real_t xNew){
-    double_t doubleOld;
+real_t criterio3 (real_t xOld, real_t xNew){
+    Double_t doubleOld;
     doubleOld.f = xOld;
-    double_t doubleNew;
+    Double_t doubleNew;
     doubleNew.f = xNew;
 
-    if (abs(doubleNew - doubleOld) < 3) return true;
-    return false; 
+    real_t erro = abs(doubleNew.i - doubleOld.i)-1;
+    return erro;
 }
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
@@ -33,34 +33,66 @@ real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_
 
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
-real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, real_t *raiz, bool rapido)
+real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, real_t *raiz, int rapido)
 {
-    real_t xNovo = (a+b)/2;
+    real_t xNovo = (a+b)/2;;
     real_t xVelho;
-    real_t fLeft, fRight, fMid;
-    real_t *erro;
+    real_t fLeft, fMid;
     real_t derivada;
+    real_t erro;
 
     if (rapido){
-        do{
-            calcPolinomio_rapido(p, a, fLeft, derivada);
-            calcPolinomio_rapido(p, b, fRight, derivada);
-            calcPolinomio_rapido(p, xNovo, fMid, derivada);
+        while(1){
+            calcPolinomio_rapido(p, a, &fLeft, &derivada);
+            calcPolinomio_rapido(p, xNovo, &fMid, &derivada);
             
             if(fLeft * fMid < 0){
-
-            }else if (fLeft * fMid){
-
+                b = xNovo;
+                xVelho = xNovo;
+            }else if (fLeft * fMid > 0){
+                a = xNovo;
+                xVelho = xNovo;
+            }else{
+                return 0;
             }
 
             if (criterioParada == 1){
-
+                erro = criterio1(xVelho, xNovo);
+                if (erro <= 0.0000001) return erro;
             }else if(criterioParada == 2){
-
+                erro = criterio2();
+                if (erro <= DBL_EPSILON) return erro;
             }else{
-
+                erro = criterio3(xVelho, xNovo);
+                if (erro < 3) return erro;
             }
-        }while ();
+        }
+    }else{
+        while(1){
+            calcPolinomio_lento(p, a, &fLeft, &derivada);
+            calcPolinomio_lento(p, xNovo, &fMid, &derivada);
+            
+            if(fLeft * fMid < 0){
+                b = xNovo;
+                xVelho = xNovo;
+            }else if (fLeft * fMid > 0){
+                a = xNovo;
+                xVelho = xNovo;
+            }else{
+                return 0;
+            }
+
+            if (criterioParada == 1){
+                erro = criterio1(xVelho, xNovo);
+                if (erro <= 0.0000001) return erro;
+            }else if(criterioParada == 2){
+                erro = criterio2();
+                if (erro <= DBL_EPSILON) return erro;
+            }else{
+                erro = criterio3(xVelho, xNovo);
+                if (erro < 3) return erro;
+            }
+        }
     }
 
     
