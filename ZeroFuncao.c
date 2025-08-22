@@ -1,3 +1,4 @@
+#include <float.h>
 #include <stdio.h>
 #include <math.h>
 
@@ -27,9 +28,46 @@ real_t criterio3 (real_t xOld, real_t xNew){
 }
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
-real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_t *raiz)
+real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_t *raiz, int rapido)
 {
- return 0;
+    //Verificar qual entrada usar
+    //Fazer alguma checagem para valores muito próximos de 0?
+    real_t fx, dfx;
+    real_t xMinusOne;
+    real_t erro;
+
+    if (rapido == 1){
+        calcPolinomio_rapido(p, x0, &fx, &dfx);
+    }else{
+        calcPolinomio_lento(p, x0, &fx, &dfx);
+    }
+    (*it)++;
+
+    //POSSIVELMENTE ESTOU PEGANDO O VALOR ERRADO NO RETORNO, VERIFICAR DEPOIS
+    xMinusOne = x0;
+    x0 = x0 - (fx/dfx);
+
+    if (criterioParada == 1){
+        erro = criterio1(xMinusOne,x0);
+        if (erro <= 0.0000001){
+            (*raiz) = x0;
+            return erro;
+        }
+    }else if(criterioParada == 2){
+        erro = criterio2(x0);
+        if (erro <=DBL_EPSILON){
+            (*raiz) = x0;
+            return erro;
+        }
+    }else{
+        erro = criterio3(xMinusOne, x0);
+        if (erro < 3){
+            (*raiz) = x0;
+            return erro;
+        }
+    }
+    
+    return 0;
 }
 
 
