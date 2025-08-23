@@ -9,7 +9,7 @@
 
 # Lista de arquivos para distribuição
 DISTFILES = *.c *.h Makefile *.dat 
-DISTDIR = ${USER}
+DISTDIR = sps19
 
 .PHONY: clean purge dist all
 

@@ -29,10 +29,12 @@ int main ()
 
   fesetround(FE_DOWNWARD);
   // Restante do programa a partir daqui
+
+  printf("RAPIDO\n\n");
   t1 = timestamp();
   erro = bisseccao(pol, a, b, 1, &it, &raiz, 1);
   t2 = timestamp();
-  printf("bissec  %+.15e %+3.8e %6d %.8e\n", raiz, erro, it, t2-t1);
+  printf("bissec  %+.15e %+3.8e  %3d %.8e\n", raiz, erro, it, t2-t1);
   it = 0;
 
   t1 = timestamp();
@@ -67,12 +69,12 @@ int main ()
 
 
 
-  printf("\n");
+  printf("\nLENTO\n\n");
 
   t1 = timestamp();
   erro = bisseccao(pol, a, b, 1, &it, &raiz, 0);
   t2 = timestamp();
-  printf("bissec  %+.15e %+3.8e  %3d %.8e\n", raiz, erro, it, t2-t1);
+  printf("bissec %+.15e %+3.8e  %3d %.8e\n", raiz, erro, it, t2-t1);
   it = 0;
 
   t1 = timestamp();

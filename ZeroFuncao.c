@@ -7,8 +7,7 @@
 #include "DoubleType.h"
 
 real_t criterio1 (real_t xOld, real_t xNew){
-    real_t erro = fabs(xNew - xOld);
-    erro *= xOld;
+    real_t erro = fabs(xNew - xOld)/ fabs(xNew);
     return erro;
 }
 
@@ -37,33 +36,41 @@ real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_
     real_t erro;
 
     if (rapido == 1){
-        calcPolinomio_rapido(p, x0, &fx, &dfx);
-    }else{
-        calcPolinomio_lento(p, x0, &fx, &dfx);
-    }
-    (*it)++;
-
-    //POSSIVELMENTE ESTOU PEGANDO O VALOR ERRADO NO RETORNO, VERIFICAR DEPOIS
-    xMinusOne = x0;
-    x0 = x0 - (fx/dfx);
-
-    if (criterioParada == 1){
-        erro = criterio1(xMinusOne,x0);
-        if (erro <= 0.0000001){
-            (*raiz) = x0;
-            return erro;
+            calcPolinomio_rapido(p, x0, &fx, &dfx);
+        }else{
+            calcPolinomio_lento(p, x0, &fx, &dfx);
         }
-    }else if(criterioParada == 2){
-        erro = criterio2(x0);
-        if (erro <=DBL_EPSILON){
-            (*raiz) = x0;
-            return erro;
+
+    while(*it<600){        
+        (*it)++;
+        //POSSIVELMENTE ESTOU PEGANDO O VALOR ERRADO NO RETORNO, VERIFICAR DEPOIS
+        xMinusOne = x0;
+        x0 = x0 - (fx/dfx);
+
+        if (criterioParada == 1){
+            erro = criterio1(xMinusOne,x0);
+            if (erro <= 0.0000001){
+                (*raiz) = x0;
+                return erro;
+            }
+        }else if(criterioParada == 2){
+            erro = criterio2(fx);
+            if (erro <=DBL_EPSILON){
+                (*raiz) = x0;
+                return erro;
+            }
+        }else{
+            erro = criterio3(xMinusOne, x0);
+            if (erro < 3){
+                (*raiz) = x0;
+                return erro;
+            }
         }
-    }else{
-        erro = criterio3(xMinusOne, x0);
-        if (erro < 3){
-            (*raiz) = x0;
-            return erro;
+
+        if (rapido == 1){
+            calcPolinomio_rapido(p, x0, &fx, &dfx);
+        }else{
+            calcPolinomio_lento(p, x0, &fx, &dfx);
         }
     }
     
